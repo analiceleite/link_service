@@ -1,9 +1,10 @@
 <script setup>
-import item from "./components/item.vue";
+import Item from "./components/item.vue";
+import Footer from "./components/footer.vue";
 </script>
 
 <script>
-import dados from "./data/services.json";
+// import dados from "./data/services.json";
 export default {
   data() {
     return {
@@ -11,8 +12,12 @@ export default {
     };
   },
   mounted() {
-    this.services = dados;
-    console.log(dados);
+    fetch(
+      "https://raw.githubusercontent.com/analiceleite/link_service/main/src/data/services.json"
+    )
+      .then((res) => res.json())
+      .then((res) => (this.services = res))
+      .catch((e) => cobsole.log(e));
   },
 };
 </script>
@@ -23,20 +28,21 @@ export default {
     <h1>Seja bem vindo(a)!</h1>
     <hr />
     <div class="items">
-      <item v-for="(service, index) in services" :key="index" :item="service" />
+      <Item v-for="(service, index) in services" :key="index" :item="service" />
+    </div>
+    <div>
+      <Footer />
     </div>
   </div>
 </template>
 
 <style scoped>
-
 .items {
   display: flex;
   justify-content: center;
   /* Faz com que, ao diminuir a tela os itens se adequem */
   flex-wrap: wrap;
 }
-
 .logo {
   width: 100px;
   height: 6em;
